@@ -1,8 +1,8 @@
 import NextAuth from 'next-auth';
+
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { connectToDB } from '@/app/lib/mongodb';
 import { compare } from 'bcrypt';
-//import type { AuthOptions } from 'next-auth';
 import type { AuthOptions } from 'next-auth';
 import { User } from '@/types/user';
 
@@ -10,6 +10,7 @@ export const authOptions: AuthOptions = {
   session: {
     strategy: 'jwt',
   },
+  
   providers: [
     CredentialsProvider({
       name: 'Credentials',
