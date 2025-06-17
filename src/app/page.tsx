@@ -15,7 +15,7 @@ const links = [
 export default function HomePage() {
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Next.js Concepts Demo</h1>
+      <h1 className="text-2xl font-bold mb-4">Page Navigation</h1>
       <ul className="list-disc pl-6 space-y-2">
         {links.map((link) => (
           <li key={link.href}>

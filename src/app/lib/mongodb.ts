@@ -1,28 +1,33 @@
-import { MongoClient } from 'mongodb';
+import { MongoClient, Db } from 'mongodb';
 
-const uri = process.env.MONGODB_URI!;
-const options = {};
+const uri = process.env.MONGODB_URI as string;
+
+if (!uri) {
+  throw new Error('❌ MONGODB_URI environment variable is not defined');
+}
 
 let client: MongoClient;
 let clientPromise: Promise<MongoClient>;
 
 declare global {
-  var _mongoClientPromise: Promise<MongoClient>;
-}
-
-if (!process.env.MONGODB_URI) {
-  throw new Error('Please add your MongoDB URI to .env.local');
+  // Allow reuse of global object for hot reload in development
+  var _mongoClientPromise: Promise<MongoClient> | undefined;
 }
 
 if (process.env.NODE_ENV === 'development') {
+  // In dev mode, use a global variable so it's not recreated
   if (!global._mongoClientPromise) {
-    client = new MongoClient(uri, options);
+    client = new MongoClient(uri);
     global._mongoClientPromise = client.connect();
   }
   clientPromise = global._mongoClientPromise;
 } else {
-  client = new MongoClient(uri, options);
+  // In production, no global caching
+  client = new MongoClient(uri);
   clientPromise = client.connect();
 }
 
-export default clientPromise;
+export async function connectToDB(): Promise<Db> {
+  const client = await clientPromise;
+  return client.db(); // optionally pass db name: client.db('myDB')
+}
