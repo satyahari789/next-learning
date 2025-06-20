@@ -10,6 +10,7 @@ const links = [
   { href: '/search-pagination', label: 'Search and Pagination' },
   { href: '/mutate-data', label: 'Mutating Data (Forms/API)' },
   { href: '/error-handling', label: 'Handling Errors' },
+  { href: '/auth', label: 'Athentication'},
 ];
 
 export default function HomePage() {
